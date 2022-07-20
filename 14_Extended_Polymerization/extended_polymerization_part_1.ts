@@ -6,14 +6,12 @@ const data: string[] = split(readFileSync('input.txt', 'utf-8'), '\n\n')
 // -------------------------------------------
 
 let polymer: string = data[0]
-const dictionary: Map<string, string> = new Map()
 
-function setDictionary() {
-  each(split(data[1], '\n'), (line) => {
-    const definition = split(line, ' -> ')
-    dictionary.set(definition[0], definition[1])
-  })
-}
+const dictionary: Map<string, string> = new Map()
+each(split(data[1], '\n'), (line) => {
+  const definition = split(line, ' -> ')
+  dictionary.set(definition[0], definition[1])
+})
 
 function advanceStep() {
   const pairingToCheck: string[] = map(
@@ -22,8 +20,7 @@ function advanceStep() {
   )
   const newPolymer: string[] = []
 
-  let i = 2
-  while (i <= polymer.length) {
+  for (let i = 2; i <= polymer.length; i++) {
     newPolymer.push(pairingToCheck[0])
     // check pairing
     const definition = dictionary.get(join(pairingToCheck, ''))
@@ -33,8 +30,8 @@ function advanceStep() {
     // slide check array
     pairingToCheck.shift()
     pairingToCheck.push(polymer[i])
-    i++
   }
+
   newPolymer.push(polymer[polymer.length - 1])
   polymer = join(newPolymer, '')
 }
@@ -59,11 +56,8 @@ function calculateAnswer() {
   )
 }
 
-setDictionary()
-let i = 0
-while (i < 10) {
+for (let i = 0; i < 10; i++) {
   advanceStep()
-  i++
 }
 
 console.log(calculateAnswer())

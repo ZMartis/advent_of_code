@@ -6,40 +6,32 @@ const data: string[] = split(readFileSync('input.txt', 'utf-8'), '\n\n')
 // -------------------------------------------
 
 const letterTally: Map<string, number> = new Map()
-function setInitialLetterTally() {
-  each(split(data[0], ''), (letter) => {
-    const letterMapping = letterTally.get(letter)
-    if (letterMapping === undefined) {
-      letterTally.set(letter, 1)
-    } else {
-      letterTally.set(letter, letterMapping + 1)
-    }
-  })
-}
+each(split(data[0], ''), (letter) => {
+  const letterMapping = letterTally.get(letter)
+  if (letterMapping === undefined) {
+    letterTally.set(letter, 1)
+  } else {
+    letterTally.set(letter, letterMapping + 1)
+  }
+})
 
 let pairMapping: Map<string, number> = new Map()
-function setPairMapping() {
-  const initialPolymerArray = split(data[0], '')
-  let i = 0
-  while (i < initialPolymerArray.length - 1) {
-    const pairing = `${initialPolymerArray[i]}${initialPolymerArray[i + 1]}`
-    const pairMapped = pairMapping.get(pairing)
-    if (pairMapped === undefined) {
-      pairMapping.set(pairing, 1)
-    } else {
-      pairMapping.set(pairing, pairMapped + 1)
-    }
-    i++
+const initialPolymerArray = split(data[0], '')
+for (let i = 0; i < initialPolymerArray.length - 1; i++) {
+  const pairing = `${initialPolymerArray[i]}${initialPolymerArray[i + 1]}`
+  const pairMapped = pairMapping.get(pairing)
+  if (pairMapped === undefined) {
+    pairMapping.set(pairing, 1)
+  } else {
+    pairMapping.set(pairing, pairMapped + 1)
   }
 }
 
 const dictionary: Map<string, string> = new Map()
-function setDictionary() {
-  each(split(data[1], '\n'), (line) => {
-    const definition = split(line, ' -> ')
-    dictionary.set(definition[0], definition[1])
-  })
-}
+each(split(data[1], '\n'), (line) => {
+  const definition = split(line, ' -> ')
+  dictionary.set(definition[0], definition[1])
+})
 
 function advanceStep() {
   const newPairs: Map<string, number> = new Map()
@@ -81,13 +73,8 @@ function calculateAnswer() {
   return orderedLetters[0][1] - orderedLetters[orderedLetters.length - 1][1]
 }
 
-setInitialLetterTally()
-setPairMapping()
-setDictionary()
-let i = 0
-while (i < 40) {
+for (let i = 0; i < 40; i++) {
   advanceStep()
-  i++
 }
 
 console.log(calculateAnswer())
