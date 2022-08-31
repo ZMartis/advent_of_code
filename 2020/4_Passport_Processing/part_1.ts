@@ -11,7 +11,6 @@ const passports: string[][][] = map(
   }
 )
 
-// filter out passports with less than 7 rows
 const almostFullPassports: string[][][] = filter(
   passports,
   (passport) => passport.length >= 7
