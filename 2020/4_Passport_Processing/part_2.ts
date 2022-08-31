@@ -49,12 +49,7 @@ const passportsWithCorrectFields: string[][][] = filter(
 const mappedPassports: Passport[] = []
 
 each(passportsWithCorrectFields, (passport) => {
-  mappedPassports.push(
-    new Map<
-      'byr' | 'iyr' | 'eyr' | 'hgt' | 'hcl' | 'ecl' | 'pid' | 'cid',
-      string
-    >()
-  )
+  mappedPassports.push(new Map())
   each(passport, ([key, value]) =>
     mappedPassports[mappedPassports.length - 1].set(
       key as 'byr' | 'iyr' | 'eyr' | 'hgt' | 'hcl' | 'ecl' | 'pid' | 'cid',
