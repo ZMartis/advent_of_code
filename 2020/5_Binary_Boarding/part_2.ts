@@ -38,7 +38,6 @@ const rowsAndColumns = map(input, (row) => {
 const seatIds = sortBy(map(rowsAndColumns, ([row, column]) => row * 8 + column))
 
 let yourSeat: null | number = null
-
 for (let i = seatIds[0]; i <= seatIds[seatIds.length - 1]; i++) {
   if (!includes(seatIds, i)) {
     yourSeat = i
