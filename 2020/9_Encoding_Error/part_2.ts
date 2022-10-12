@@ -12,7 +12,6 @@ const currentPreambleList: number[] = []
 let nextIndex = preambleLength
 let nextIndexValue: number
 let erroredNumber: number | null = null
-
 let sumOfFinalSet: number | null = null
 
 function run() {
