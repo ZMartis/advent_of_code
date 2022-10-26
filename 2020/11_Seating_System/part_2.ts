@@ -14,7 +14,7 @@ const input = map(split(readFileSync('input.txt', 'utf-8'), '\n'), (row) =>
 let currentMapping = new Map<string, SeatState>()
 let nextMapping = new Map<string, SeatState>()
 
-function run() {
+function run(): number {
   setCurrentMapping()
 
   while (!identicalMaps()) {
