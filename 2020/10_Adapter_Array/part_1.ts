@@ -7,9 +7,7 @@ const sortedList = sortBy(
   )
 )
 
-// Add wall value to front of list
 sortedList.unshift(0)
-// Add device converter to list
 sortedList.push(sortedList[sortedList.length - 1] + 3)
 
 const mapping = {
