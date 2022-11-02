@@ -26,7 +26,6 @@ function run() {
     }
 
     if (direction !== 'L' && direction !== 'R') {
-      console.log(movingDirection)
       moveShip(movingDirection, value)
     }
   })
@@ -38,77 +37,125 @@ function rotateShip(direction: 'L' | 'R', value: number) {
   switch (currentDirection) {
     case 'N':
       if (direction === 'L') {
-        if (value === 90) {
-          currentDirection = 'W'
-        } else if (value === 180) {
-          currentDirection = 'S'
-        } else {
-          currentDirection = 'E'
+        switch (value) {
+          case 90:
+            currentDirection = 'W'
+            break
+          case 180:
+            currentDirection = 'S'
+            break
+          case 270:
+            currentDirection = 'E'
+            break
+          default:
+            break
         }
       } else {
-        if (value === 90) {
-          currentDirection = 'E'
-        } else if (value === 180) {
-          currentDirection = 'S'
-        } else {
-          currentDirection = 'W'
+        switch (value) {
+          case 90:
+            currentDirection = 'E'
+            break
+          case 180:
+            currentDirection = 'S'
+            break
+          case 270:
+            currentDirection = 'W'
+            break
+          default:
+            break
         }
       }
       break
     case 'S':
       if (direction === 'L') {
-        if (value === 90) {
-          currentDirection = 'E'
-        } else if (value === 180) {
-          currentDirection = 'N'
-        } else {
-          currentDirection = 'W'
+        switch (value) {
+          case 90:
+            currentDirection = 'E'
+            break
+          case 180:
+            currentDirection = 'N'
+            break
+          case 270:
+            currentDirection = 'W'
+            break
+          default:
+            break
         }
       } else {
-        if (value === 90) {
-          currentDirection = 'W'
-        } else if (value === 180) {
-          currentDirection = 'N'
-        } else {
-          currentDirection = 'E'
+        switch (value) {
+          case 90:
+            currentDirection = 'W'
+            break
+          case 180:
+            currentDirection = 'N'
+            break
+          case 270:
+            currentDirection = 'E'
+            break
+          default:
+            break
         }
       }
       break
     case 'E':
       if (direction === 'L') {
-        if (value === 90) {
-          currentDirection = 'N'
-        } else if (value === 180) {
-          currentDirection = 'W'
-        } else {
-          currentDirection = 'S'
+        switch (value) {
+          case 90:
+            currentDirection = 'N'
+            break
+          case 180:
+            currentDirection = 'W'
+            break
+          case 270:
+            currentDirection = 'S'
+            break
+          default:
+            break
         }
       } else {
-        if (value === 90) {
-          currentDirection = 'S'
-        } else if (value === 180) {
-          currentDirection = 'W'
-        } else {
-          currentDirection = 'N'
+        switch (value) {
+          case 90:
+            currentDirection = 'S'
+            break
+          case 180:
+            currentDirection = 'W'
+            break
+          case 270:
+            currentDirection = 'N'
+            break
+          default:
+            break
         }
       }
       break
     case 'W':
       if (direction === 'L') {
-        if (value === 90) {
-          currentDirection = 'S'
-        } else if (value === 180) {
-          currentDirection = 'E'
-        } else {
-          currentDirection = 'N'
+        switch (value) {
+          case 90:
+            currentDirection = 'S'
+            break
+          case 180:
+            currentDirection = 'E'
+            break
+          case 270:
+            currentDirection = 'N'
+            break
+          default:
+            break
         }
       } else {
-        if (value === 90) {
-          currentDirection = 'N'
-        } else if (value === 180) {
-          currentDirection = 'E'
-        } else {
-          currentDirection = 'S'
+        switch (value) {
+          case 90:
+            currentDirection = 'N'
+            break
+          case 180:
+            currentDirection = 'E'
+            break
+          case 270:
+            currentDirection = 'S'
+            break
+          default:
+            break
         }
       }
       break
