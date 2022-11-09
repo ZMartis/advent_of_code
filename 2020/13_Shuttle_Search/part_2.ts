@@ -1,10 +1,23 @@
 import { readFileSync } from 'fs'
-import { each, every, map, orderBy, split, subtract, toNumber } from 'lodash'
+import {
+  differenceBy,
+  each,
+  filter,
+  isNaN,
+  map,
+  orderBy,
+  split,
+  subtract,
+  toNumber,
+} from 'lodash'
+import { performance } from 'perf_hooks'
+
+const startTime = performance.now()
 
 type Bus = {
   busNumber: number
   position: number
-  latestCheckedTime: number
+  offsetFromLargest: number
 }
 
 const input: string[] = split(
@@ -12,52 +25,61 @@ const input: string[] = split(
   ','
 )
 
-const buses: Bus[] = []
-each(input, (bus, index) => {
-  if (bus !== 'x') {
-    buses.push({
+const buses: Bus[] = filter(
+  map(input, (bus, index) => {
+    return {
       busNumber: toNumber(bus),
       position: index,
-      latestCheckedTime: 0,
-    })
-  }
-})
+      offsetFromLargest: 0,
+    }
+  }),
+  (bus) => !isNaN(bus.busNumber)
+)
+
 const largestBus = orderBy(buses, 'busNumber', 'desc')[0]
 
 function run() {
-  // set time to check agaist
-  // check all other numbers if they have 0 remainerd at their index relative to time
-  let iteratedTime = 100000000000000 - (100000000000000 % largestBus.busNumber)
-  let locationFound = false
+  setOffsetsFromLargestBus()
 
-  while (locationFound === false) {
-    checkBuses(iteratedTime)
-      ? (locationFound = true)
-      : (iteratedTime += largestBus.busNumber)
-    console.log(
-      map(buses, (bus, index) => {
-        const timeToCheck =
-          iteratedTime + subtract(bus.position, largestBus.position)
+  const foundBuses: Bus[] = [orderBy(buses, 'busNumber', 'desc')[0]]
+  let iterationTime = largestBus.busNumber
+  let currentTime = iterationTime
 
-        buses[index].latestCheckedTime = timeToCheck
-        return timeToCheck % bus.busNumber === 0
-      })
-    )
-    console.log(buses)
+  while (foundBuses.length < buses.length) {
+    currentTime += iterationTime
+    const busesFoundAtCurrentTime = findBusesAtCurrentTime(currentTime)
+
+    if (busesFoundAtCurrentTime.length > foundBuses.length) {
+      const newFoundBus = differenceBy(
+        busesFoundAtCurrentTime,
+        foundBuses,
+        'busNumber'
+      )[0]
+      foundBuses.push(newFoundBus)
+      iterationTime *= newFoundBus.busNumber
+    }
   }
-  return buses
+  return currentTime + buses[0].offsetFromLargest
 }
 
-function checkBuses(iteratedTime: number) {
-  return every(
-    map(buses, (bus, index) => {
-      const timeToCheck =
-        iteratedTime + subtract(bus.position, largestBus.position)
+// --------------
 
-      buses[index].latestCheckedTime = timeToCheck
-      return timeToCheck % bus.busNumber === 0
-    })
-  )
+function setOffsetsFromLargestBus() {
+  each(buses, (bus, index) => {
+    buses[index].offsetFromLargest = subtract(bus.position, largestBus.position)
+  })
 }
+
+function findBusesAtCurrentTime(currentTime: number) {
+  return filter(buses, (bus) => {
+    return (currentTime + bus.offsetFromLargest) % bus.busNumber === 0
+  })
+}
+
+// --------------
 
 console.log(run())
+
+const endTime = performance.now()
+
+console.log(`${endTime - startTime}ms`)
