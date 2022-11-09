@@ -10,9 +10,6 @@ import {
   subtract,
   toNumber,
 } from 'lodash'
-import { performance } from 'perf_hooks'
-
-const startTime = performance.now()
 
 type Bus = {
   busNumber: number
@@ -21,7 +18,7 @@ type Bus = {
 }
 
 const input: string[] = split(
-  split(readFileSync('input.txt', 'utf-8'), '\n')[1],
+  split(readFileSync('largerInput.txt', 'utf-8'), '\n')[1],
   ','
 )
 
@@ -79,7 +76,3 @@ function findBusesAtCurrentTime(currentTime: number) {
 // --------------
 
 console.log(run())
-
-const endTime = performance.now()
-
-console.log(`${endTime - startTime}ms`)
