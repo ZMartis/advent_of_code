@@ -18,7 +18,7 @@ type Bus = {
 }
 
 const input: string[] = split(
-  split(readFileSync('largerInput.txt', 'utf-8'), '\n')[1],
+  split(readFileSync('input.txt', 'utf-8'), '\n')[1],
   ','
 )
 
