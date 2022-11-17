@@ -10,6 +10,7 @@ import {
   subtract,
   toNumber,
 } from 'lodash'
+import { performance } from 'perf_hooks'
 
 type Bus = {
   busNumber: number
