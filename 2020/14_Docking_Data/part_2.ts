@@ -27,6 +27,8 @@ const input: CommandInfo[] = map(
   }
 )
 
+// Main Function -------------------
+
 function run() {
   const memoryAddressMap = new Map<number, number>()
   let mask: CommandInfo['binaryString']
@@ -53,6 +55,8 @@ function run() {
   return sum(map([...memoryAddressMap], (pairing) => pairing[1]))
 }
 
+// Secondary Functions ---------------
+
 function createFlexMemoryAddress(
   mask: CommandInfo['binaryString'],
   initialMemoryAddress: CommandInfo['memoryAddress']
@@ -74,7 +78,6 @@ function collapseMemoryAddresses(fluxMemoryAddress: string[]) {
   for (let i = 0; i < 2 ** numberOfFlexDigits; i++) {
     const binaryString = decimalToBitBinary(i, numberOfFlexDigits)
     let currentBinaryStringIndex = 0
-
     memoryAddresses.push(
       toNumber(
         binaryToString(
@@ -97,7 +100,7 @@ function collapseMemoryAddresses(fluxMemoryAddress: string[]) {
   return memoryAddresses
 }
 
-// ------------------------
+// Helper Functions ------------------------
 
 function decimalToBitBinary(decimal: number, length: number) {
   let binaryString = (decimal >>> 0).toString(2)
