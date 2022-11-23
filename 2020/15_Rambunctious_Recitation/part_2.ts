@@ -17,11 +17,11 @@ function run(gameLength: number) {
 
   let latestSpokenNumber = 0
   for (let i = startingNumbers.length + 1; i < gameLength; i++) {
-    const mappedIndex = spokenNumberMapping.get(latestSpokenNumber)
+    const previousIndex = spokenNumberMapping.get(latestSpokenNumber)
     spokenNumberMapping.set(latestSpokenNumber, i)
-    mappedIndex === undefined
+    previousIndex === undefined
       ? (latestSpokenNumber = 0)
-      : (latestSpokenNumber = i - mappedIndex)
+      : (latestSpokenNumber = i - previousIndex)
   }
 
   return latestSpokenNumber
