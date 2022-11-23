@@ -10,11 +10,9 @@ const startingNumbers = map(
 
 function run(gameLength: number) {
   const spokenNumberMapping = new Map<number, number>()
-
   each(startingNumbers, (number, index) => {
     spokenNumberMapping.set(number, index + 1)
   })
-
   let latestSpokenNumber = 0
   for (let i = startingNumbers.length + 1; i < gameLength; i++) {
     const previousIndex = spokenNumberMapping.get(latestSpokenNumber)
@@ -23,7 +21,6 @@ function run(gameLength: number) {
       ? (latestSpokenNumber = 0)
       : (latestSpokenNumber = i - previousIndex)
   }
-
   return latestSpokenNumber
 }
 
