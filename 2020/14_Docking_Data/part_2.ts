@@ -35,11 +35,14 @@ function run() {
     if (command === 'mask') {
       mask = binaryString
     } else if (memoryAddress !== undefined) {
-      const calculatedMemoryAddresses = findMemoryAddressesFromMask(
+      const fluxMemoryAddress: string[] = createFlexMemoryAddress(
         mask,
         memoryAddress
       )
-      each(calculatedMemoryAddresses, (calculatedMemoryAddress) => {
+      const collapsedMemoryAddresses =
+        collapseMemoryAddresses(fluxMemoryAddress)
+
+      each(collapsedMemoryAddresses, (calculatedMemoryAddress) => {
         memoryAddressMap.set(
           calculatedMemoryAddress,
           toNumber(binaryToString(binaryString))
@@ -50,24 +53,28 @@ function run() {
   return sum(map([...memoryAddressMap], (pairing) => pairing[1]))
 }
 
-function findMemoryAddressesFromMask(
+function createFlexMemoryAddress(
   mask: CommandInfo['binaryString'],
   initialMemoryAddress: CommandInfo['memoryAddress']
 ) {
-  const fluxMemoryAddress = map(split(mask, ''), (digit, index) =>
+  return map(split(mask, ''), (digit, index) =>
     digit === '0'
       ? decimalToBitBinary(initialMemoryAddress as number, 36)[index]
       : digit
   )
+}
+
+function collapseMemoryAddresses(fluxMemoryAddress: string[]) {
+  let memoryAddresses: number[] = []
   const numberOfFlexDigits = filter(
     fluxMemoryAddress,
     (digit) => digit === 'X'
   ).length
 
-  let memoryAddresses: number[] = []
   for (let i = 0; i < 2 ** numberOfFlexDigits; i++) {
     const binaryString = decimalToBitBinary(i, numberOfFlexDigits)
     let currentBinaryStringIndex = 0
+
     memoryAddresses.push(
       toNumber(
         binaryToString(
