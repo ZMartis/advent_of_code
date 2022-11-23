@@ -47,7 +47,7 @@ function run() {
       each(collapsedMemoryAddresses, (calculatedMemoryAddress) => {
         memoryAddressMap.set(
           calculatedMemoryAddress,
-          toNumber(binaryToString(binaryString))
+          toNumber(binaryToIntString(binaryString))
         )
       })
     }
@@ -80,7 +80,7 @@ function collapseMemoryAddresses(fluxMemoryAddress: string[]) {
     let currentBinaryStringIndex = 0
     memoryAddresses.push(
       toNumber(
-        binaryToString(
+        binaryToIntString(
           join(
             map(fluxMemoryAddress, (digit) => {
               if (digit === 'X') {
@@ -110,7 +110,7 @@ function decimalToBitBinary(decimal: number, length: number) {
   return binaryString
 }
 
-function binaryToString(binary: string) {
+function binaryToIntString(binary: string) {
   return parseInt(binary, 2).toString(10)
 }
 
