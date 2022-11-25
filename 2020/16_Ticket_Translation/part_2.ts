@@ -50,8 +50,6 @@ const nearbyTickets = map(split(split(input[2], ':\n')[1], '\n'), (line) =>
 )
 
 // ---------------------------
-
-const invalidNumberSet = new Set<number>()
 const invalidTicketIndexes: number[] = []
 
 function run() {
@@ -132,6 +130,7 @@ function filterValidTickets() {
 }
 
 function findInvalidTickets(): void {
+  const invalidNumberSet = new Set<number>()
   each(flatten(nearbyTickets), (number, numberIndex) => {
     if (invalidNumberSet.has(number)) {
       invalidTicketIndexes.push(ticketIndex(numberIndex))
