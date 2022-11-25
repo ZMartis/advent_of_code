@@ -11,7 +11,6 @@ import {
   map,
   pull,
   reduce,
-  some,
   split,
   startsWith,
   toNumber,
