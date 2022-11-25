@@ -5,10 +5,15 @@ import {
   every,
   filter,
   flatten,
+  floor,
+  includes,
   intersection,
   map,
+  pull,
+  reduce,
   some,
   split,
+  startsWith,
   toNumber,
 } from 'lodash'
 
@@ -38,7 +43,9 @@ each(split(input[0], '\n'), (line) => {
     highMax: toNumber(highRange[1]),
   }
 })
-const myTicket = split(split(input[1], ':\n')[1], ',')
+const myTicket = map(split(split(input[1], ':\n')[1], ','), (string) =>
+  toNumber(string)
+)
 const nearbyTickets = map(split(split(input[2], ':\n')[1], '\n'), (line) =>
   map(split(line, ','), (string) => toNumber(string))
 )
@@ -46,29 +53,94 @@ const nearbyTickets = map(split(split(input[2], ':\n')[1], '\n'), (line) =>
 // ---------------------------
 
 const invalidNumberSet = new Set<number>()
+const invalidTicketIndexes: number[] = []
 
 function run() {
-  const validNearbyTickets = filter(nearbyTickets, (ticket) => {
-    if (intersection(ticket, [...invalidNumberSet]).length > 0) {
-      return false
-    } else if (ticketIsInvalid(ticket)) {
-      return false
-    } else {
-      return true
-    }
-  })
+  findInvalidTickets()
+  const validTickets = filterValidTickets()
+  const ruleMapPositions = numberIndexToRuleMap(validTickets)
+  const orderOfRules = collapseRuleMap(ruleMapPositions)
+  return calculateAnswer(orderOfRules)
 }
 
-function ticketIsInvalid(ticket: number[]) {
-  return some(
-    map(ticket, (number) => {
-      if (numberIsInvalid(number)) {
-        invalidNumberSet.add(number)
-        return true
-      }
-      return false
-    })
+// ----------------
+
+function calculateAnswer(orderOfRules: string[]) {
+  const departureIndexes: number[] = []
+  each(orderOfRules, (rule, index) => {
+    if (startsWith(rule, 'departure')) {
+      departureIndexes.push(index)
+    }
+  })
+  return reduce(
+    map(departureIndexes, (number) => myTicket[number]),
+    (mult, n) => mult * n
   )
+}
+
+function collapseRuleMap(mapping: Map<number, string[]>) {
+  const possibleRulesForEachIndex = [...mapping.values()]
+  while (!every(map([...mapping], ([_key, value]) => value.length === 1))) {
+    each(possibleRulesForEachIndex, (possibleRulesForIndex, currentIndex) => {
+      if (possibleRulesForIndex.length === 1) {
+        each(possibleRulesForEachIndex, (_value, checkedIndex) => {
+          if (currentIndex !== checkedIndex) {
+            pull(
+              possibleRulesForEachIndex[checkedIndex],
+              possibleRulesForIndex[0]
+            )
+          }
+        })
+      }
+    })
+  }
+  return flatten(possibleRulesForEachIndex)
+}
+
+function numberIndexToRuleMap(tickets: number[][]): Map<number, string[]> {
+  const mapping = new Map<number, string[]>()
+  // initialize 0 - ticket.length with every rule
+  for (let i = 0; i < 20; i++) {
+    mapping.set(i, Object.keys(rules))
+  }
+
+  for (let i = 0; i < nearbyTickets.length - 1; i++) {
+    each(tickets[i], (number, index) => {
+      const possibleRulesForNumber: string[] = []
+      each(rules, (value, key) => {
+        if (
+          (number >= value.lowMin && number <= value.lowMax) ||
+          (number >= value.highMin && number <= value.highMax)
+        ) {
+          possibleRulesForNumber.push(key)
+        }
+      })
+      mapping.set(
+        index,
+        intersection(mapping.get(index), possibleRulesForNumber)
+      )
+    })
+  }
+
+  return mapping
+}
+
+function filterValidTickets() {
+  return filter(
+    nearbyTickets,
+    (_ticket, index) => !includes(invalidTicketIndexes, index)
+  )
+}
+
+function findInvalidTickets(): void {
+  each(flatten(nearbyTickets), (number, numberIndex) => {
+    if (invalidNumberSet.has(number)) {
+      invalidTicketIndexes.push(ticketIndex(numberIndex))
+    } else if (numberIsInvalid(number)) {
+      invalidNumberSet.add(number)
+      invalidTicketIndexes.push(ticketIndex(numberIndex))
+    }
+  })
 }
 
 function numberIsInvalid(number: number) {
@@ -83,4 +155,8 @@ function numberIsInvalid(number: number) {
   )
 }
 
-run()
+function ticketIndex(numberIndex: number) {
+  return floor(numberIndex / myTicket.length)
+}
+
+console.log(run())
