@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { filter, includes, map, split, toNumber } from 'lodash'
+import { includes, map, split, toNumber } from 'lodash'
 
 const input = map(split(readFileSync('input.txt', 'utf-8'), '\n'), (string) =>
   toNumber(string)
