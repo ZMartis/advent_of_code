@@ -4,7 +4,7 @@ import { each, flatten, map, replace, split, sum, toNumber, trim } from 'lodash'
 const input = map(
   split(
     replace(
-      replace(readFileSync('test_input.txt', 'utf-8'), /bags/g, ''),
+      replace(readFileSync('input.txt', 'utf-8'), /bags/g, ''),
       /bag/g,
       ''
     ),
@@ -32,10 +32,14 @@ function addChildren(containingBag: string): number {
       if (lowerBagName[0] === 'no other') {
         return number
       } else {
-        return number * addChildren(bagName)
+        return number * addChildren(bagName) + number
       }
     })
   )
 }
+
+// function recursiveCountBags(parentBag: string): number {
+//   const number
+// }
 
 console.log(addChildren('shiny gold'))
