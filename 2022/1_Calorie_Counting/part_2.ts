@@ -10,6 +10,14 @@ const bagsWithTotalCallories = input.map((bag) =>
   bag.reduce((sum, number) => sum + number)
 )
 
-const bagWithMostCallories = bagsWithTotalCallories.sort((a, b) => b - a)[0]
+const sortedBags = bagsWithTotalCallories.sort((a, b) => b - a)
 
-console.log(bagWithMostCallories)
+function sumOfTopBags(numberOfBags: number) {
+  let sumOfBags = 0
+  for (let i = 0; i < numberOfBags; i++) {
+    sumOfBags += sortedBags[i]
+  }
+  return sumOfBags
+}
+
+console.log(sumOfTopBags(3))
