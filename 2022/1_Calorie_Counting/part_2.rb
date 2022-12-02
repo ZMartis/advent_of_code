@@ -5,13 +5,9 @@ input =
     .split("\n\n")
     .map { |bag| bag.split("\n").map { |candy| candy.to_i } }
 
-@sorted_bag_totals =
-  input.map { |bag| bag.reduce(0) { |sum, number| sum + number } }.sort.reverse
+@sorted_bag_totals = input.map { |bag| bag.sum }.sort.reverse
 
-def sumOfBags(number)
-  sum_of_number_of_bags = 0
-  number.times { |i| sum_of_number_of_bags += @sorted_bag_totals[i] }
-  return sum_of_number_of_bags
-end
+def sumOfBags(number) =
+  @sorted_bag_totals.each_slice(number).map { |section| section.sum }.first
 
 print sumOfBags(3)
