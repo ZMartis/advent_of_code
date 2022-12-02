@@ -5,7 +5,6 @@ input =
     .split("\n\n")
     .map { |bag| bag.split("\n").map { |line| line.to_i } }
 
-bags_with_total_calories =
-  input.map { |bag| bag.reduce(0) { |sum, number| sum + number } }
+bags_with_total_calories = input.map { |bag| bag.reduce(:+) }
 
 print bags_with_total_calories.sort.reverse.first
