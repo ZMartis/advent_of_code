@@ -1,3 +1,4 @@
+import { count } from 'console'
 import { readFileSync } from 'fs'
 
 type Direction = {
@@ -34,22 +35,18 @@ const directions: Direction[] = input[1].split('\n').map((line) => {
 
 // -----------------------------------------------------
 
-// iterate through each direction
-// pop off end from "from" stack and then push that to "to" stack
-
-// get the last element from each stack and join them.
-
 let finalTopBoxes = new Array(stacks.length).fill('.')
 
 directions.forEach((direction) => {
-  for (let i = 0; i < direction.count; i++) {
-    const poppedLetter = stacks[direction.from].pop()
-    finalTopBoxes[direction.from] =
-      stacks[direction.from][stacks[direction.from].length - 1]
-    if (poppedLetter !== undefined) {
-      stacks[direction.to].push(poppedLetter)
-      finalTopBoxes[direction.to] = poppedLetter
-    }
+  const poppedLetters = stacks[direction.from].splice(
+    stacks[direction.from].length - direction.count,
+    direction.count
+  )
+  finalTopBoxes[direction.from] =
+    stacks[direction.from][stacks[direction.from].length - 1]
+  if (poppedLetters.length > 0) {
+    stacks[direction.to].push(...poppedLetters)
+    finalTopBoxes[direction.to] = poppedLetters[poppedLetters.length - 1]
   }
 })
 
