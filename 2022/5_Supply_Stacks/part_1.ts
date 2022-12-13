@@ -7,12 +7,13 @@ type Direction = {
 }
 
 const input = readFileSync('input.txt', 'utf-8').split('\n\n')
-
 const stackRows = input[0].split('\n')
-
-const stacks: string[][] = [[], [], [], [], [], [], [], [], []]
-
 stackRows.pop()
+
+const stacks: string[][] = []
+for (let i = 0; i < 9; i++) {
+  stacks.push([])
+}
 stackRows.forEach((row) => {
   for (let column = 0; column < 9; column++) {
     if (row[column * 4 + 1] !== ' ') {
