@@ -21,8 +21,6 @@ stackRows.forEach((row) => {
   }
 })
 
-console.log(stacks)
-
 const directions: Direction[] = input[1].split('\n').map((line) => {
   const splitLine = line.split(' ')
   return {
