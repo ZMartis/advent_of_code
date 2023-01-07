@@ -12,7 +12,7 @@ def set_pixel(display_index)
   if [@register - 1, @register, @register + 1].include?(display_index)
     @display_lines.last << '#'
   else
-    @display_lines.last << '.'
+    @display_lines.last << ' '
   end
 end
 
