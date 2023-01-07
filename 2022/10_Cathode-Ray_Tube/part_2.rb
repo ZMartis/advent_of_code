@@ -33,8 +33,6 @@ def cathode_ray_tube
         add_cycle = 0
         input_index += 1
       end
-
-      print @register, ' ', x, "\n"
     end
   end
 end
