@@ -1,26 +1,8 @@
 import { readFileSync } from 'fs'
 import { map, reduce, split } from 'lodash'
+import { Game, OutcomeValueMapping } from './types'
 
-type OpponentPlay = 'A' | 'B' | 'C'
-type SelfPlay = 'X' | 'Y' | 'Z'
-type Game = [OpponentPlay, SelfPlay]
-type OpponentPlayOutcomeMapping = {
-  A: SelfPlayOutcomeMapping
-  B: SelfPlayOutcomeMapping
-  C: SelfPlayOutcomeMapping
-}
-type SelfPlayOutcomeMapping = {
-  X: number
-  Y: number
-  Z: number
-}
-
-const games: Game[] = map(
-  split(readFileSync('input.txt', 'utf-8'), '\n'),
-  (game) => split(game, ' ') as Game
-)
-
-const outcomeValueMapping: OpponentPlayOutcomeMapping = {
+const outcomeValueMapping: OutcomeValueMapping = {
   A: {
     X: 1 + 3, // Rock    + Draw
     Y: 2 + 6, // Paper   + Won
@@ -38,11 +20,12 @@ const outcomeValueMapping: OpponentPlayOutcomeMapping = {
   },
 }
 
+const games: Game[] = map(
+  split(readFileSync('input.txt', 'utf-8'), '\n'),
+  (game) => split(game, ' ') as Game
+)
+
 console.log(
-  reduce(
-    map(games, (game) => outcomeValueMapping[game[0]][game[1]]),
-    (sum, outcome) => sum + outcome,
-    0
-  )
+  reduce(games, (sum, game) => sum + outcomeValueMapping[game[0]][game[1]], 0)
 )
 // => 9177
