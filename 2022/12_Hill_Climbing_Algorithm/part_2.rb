@@ -98,3 +98,4 @@ puts distances_from_starting_points.min
 end_time = Time.now
 
 puts end_time - start_time
+# => 0.15
